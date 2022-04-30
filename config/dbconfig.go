@@ -10,7 +10,7 @@ import (
 var DB *gorm.DB
 var err error
 
-const db_string = "host=localhost user=postgres password=12345 dbname=ETradeDB port=5432 sslmode=disable"
+const db_string = "host=localhost user=postgres password=12345 dbname=go-fiber-example port=5432 sslmode=disable"
 
 func DbConfiguration() {
 	DB, err = gorm.Open(postgres.Open(db_string), &gorm.Config{})
