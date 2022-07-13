@@ -22,11 +22,11 @@ func AddComment(comment models.Comment) models.Comment {
 	return comment
 }
 func UpdateComment(comment models.Comment) models.Comment {
-	config.DB.Save(&comment)
+	config.DB.Updates(&comment)
 	return comment
 }
 
 func DeleteComment(id int) {
 	var comment models.Comment
-	config.DB.First(&comment, id).Delete(comment)
+	config.DB.First(&comment, id).Delete(&comment)
 }

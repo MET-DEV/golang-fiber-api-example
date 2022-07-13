@@ -5,7 +5,7 @@ import (
 	"github.com/MET-DEV/golang-fiber-api-example/models"
 )
 
-func GetAllArticle() []models.Article {
+func GetAllArticles() []models.Article {
 	var articles []models.Article
 	config.DB.Preload("Comments").Find(&articles)
 	return articles
@@ -21,7 +21,7 @@ func AddArticle(article models.Article) models.Article {
 	return article
 }
 func UpdateArticle(article models.Article) models.Article {
-	config.DB.Save(&article)
+	config.DB.Updates(&article)
 	return article
 }
 

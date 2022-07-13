@@ -9,42 +9,42 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func GetAllArticle(c *fiber.Ctx) error {
-	return c.Status(http.StatusOK).JSON(repositories.GetAllArticles())
+func GetAllComment(c *fiber.Ctx) error {
+	return c.Status(http.StatusOK).JSON(repositories.GetAllComments())
 }
-func GetArticleById(c *fiber.Ctx) error {
+func GetCommentById(c *fiber.Ctx) error {
 	id, err := strconv.Atoi(c.Params("id"))
 	if err != nil {
 		return c.Status(http.StatusBadRequest).JSON("Bad Request")
 	}
-	return c.Status(http.StatusOK).JSON(repositories.GetArticleById(id))
+	return c.Status(http.StatusOK).JSON(repositories.GetCommentById(id))
 }
-func AddArticle(c *fiber.Ctx) error {
-	var article models.Article
-	err := c.BodyParser(&article)
+func AddComment(c *fiber.Ctx) error {
+	var comment models.Comment
+	err := c.BodyParser(&comment)
 	if err != nil {
 		return c.Status(http.StatusBadRequest).JSON("Bad Request")
 	}
-	return c.Status(http.StatusCreated).JSON(repositories.AddArticle(article))
+	return c.Status(http.StatusCreated).JSON(repositories.AddComment(comment))
 
 }
-func UpdateArticle(c *fiber.Ctx) error {
-	var article models.Article
-	err := c.BodyParser(&article)
+func UpdateComment(c *fiber.Ctx) error {
+	var comment models.Comment
+	err := c.BodyParser(&comment)
 	if err != nil {
 		return c.Status(http.StatusBadRequest).JSON("Bad Request")
 	}
-	if article.ID == 0 {
+	if comment.ID == 0 {
 		return c.Status(http.StatusBadRequest).JSON("Bad Request")
 	}
-	return c.Status(http.StatusCreated).JSON(repositories.UpdateArticle(article))
+	return c.Status(http.StatusCreated).JSON(repositories.UpdateComment(comment))
 
 }
-func DeleteArticle(c *fiber.Ctx) error {
+func DeleteComment(c *fiber.Ctx) error {
 	id, err := strconv.Atoi(c.Params("id"))
 	if err != nil {
 		return c.Status(http.StatusBadRequest).JSON("Bad Request")
 	}
-	repositories.DeleteArticle(id)
+	repositories.DeleteComment(id)
 	return c.Status(http.StatusOK).JSON("Deleted")
 }
