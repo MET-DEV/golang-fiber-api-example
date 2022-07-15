@@ -10,14 +10,22 @@ import (
 )
 
 func GetAllComment(c *fiber.Ctx) error {
-	return c.Status(http.StatusOK).JSON(repositories.GetAllComments())
+	result, err := repositories.GetAllComments()
+	if err != nil {
+		return c.Status(http.StatusInternalServerError).JSON(err.Error())
+	}
+	return c.Status(http.StatusOK).JSON(result)
 }
 func GetCommentById(c *fiber.Ctx) error {
 	id, err := strconv.Atoi(c.Params("id"))
 	if err != nil {
 		return c.Status(http.StatusBadRequest).JSON("Bad Request")
 	}
-	return c.Status(http.StatusOK).JSON(repositories.GetCommentById(id))
+	result, repoErr := repositories.GetCommentById(id)
+	if repoErr != nil {
+		return c.Status(http.StatusInternalServerError).JSON(repoErr.Error())
+	}
+	return c.Status(http.StatusOK).JSON(result)
 }
 func AddComment(c *fiber.Ctx) error {
 	var comment models.Comment
@@ -25,7 +33,11 @@ func AddComment(c *fiber.Ctx) error {
 	if err != nil {
 		return c.Status(http.StatusBadRequest).JSON("Bad Request")
 	}
-	return c.Status(http.StatusCreated).JSON(repositories.AddComment(comment))
+	result, repoErr := repositories.AddComment(comment)
+	if repoErr != nil {
+		c.Status(http.StatusInternalServerError).JSON(repoErr.Error())
+	}
+	return c.Status(http.StatusCreated).JSON(result)
 
 }
 func UpdateComment(c *fiber.Ctx) error {
@@ -37,7 +49,11 @@ func UpdateComment(c *fiber.Ctx) error {
 	if comment.ID == 0 {
 		return c.Status(http.StatusBadRequest).JSON("Bad Request")
 	}
-	return c.Status(http.StatusCreated).JSON(repositories.UpdateComment(comment))
+	result, repoErr := repositories.UpdateComment(comment)
+	if repoErr != nil {
+		return c.Status(http.StatusInternalServerError).JSON(repoErr.Error())
+	}
+	return c.Status(http.StatusCreated).JSON(result)
 
 }
 func DeleteComment(c *fiber.Ctx) error {
@@ -45,6 +61,9 @@ func DeleteComment(c *fiber.Ctx) error {
 	if err != nil {
 		return c.Status(http.StatusBadRequest).JSON("Bad Request")
 	}
-	repositories.DeleteComment(id)
+	repoErr := repositories.DeleteComment(id)
+	if repoErr != nil {
+		return c.Status(http.StatusInternalServerError).JSON(repoErr.Error())
+	}
 	return c.Status(http.StatusOK).JSON("Deleted")
 }

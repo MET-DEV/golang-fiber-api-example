@@ -5,28 +5,39 @@ import (
 	"github.com/MET-DEV/golang-fiber-api-example/models"
 )
 
-func GetAllComments() []models.Comment {
+func GetAllComments() ([]models.Comment, error) {
 	var comments []models.Comment
-	config.DB.Find(&comments)
-	return comments
+	if result := config.DB.Find(&comments); result.Error != nil {
+		return comments, result.Error
+	}
+	return comments, nil
 }
 
-func GetCommentById(id int) models.Comment {
+func GetCommentById(id int) (models.Comment, error) {
 	var comment models.Comment
-	config.DB.First(&comment, id)
-	return comment
+	if result := config.DB.First(&comment, id); result.Error != nil {
+		return comment, result.Error
+	}
+	return comment, nil
 }
 
-func AddComment(comment models.Comment) models.Comment {
-	config.DB.Save(&comment)
-	return comment
+func AddComment(comment models.Comment) (models.Comment, error) {
+	if result := config.DB.Save(&comment); result.Error != nil {
+		return comment, result.Error
+	}
+	return comment, nil
 }
-func UpdateComment(comment models.Comment) models.Comment {
-	config.DB.Updates(&comment)
-	return comment
+func UpdateComment(comment models.Comment) (models.Comment, error) {
+	if result := config.DB.Updates(&comment); result.Error != nil {
+		return comment, result.Error
+	}
+	return comment, nil
 }
 
-func DeleteComment(id int) {
+func DeleteComment(id int) error {
 	var comment models.Comment
-	config.DB.First(&comment, id).Delete(&comment)
+	if result := config.DB.First(&comment, id).Delete(&comment); result.Error != nil {
+		return result.Error
+	}
+	return nil
 }
