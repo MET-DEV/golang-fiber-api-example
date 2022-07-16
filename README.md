@@ -1,5 +1,4 @@
 # Golang Article Sharing CRUD API Project  
-CRUD Api with Go, Gorm and Fiber
 ## TECHNOLOGIES
 
 - GOLANG ` 1.14 `
